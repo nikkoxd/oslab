@@ -22,10 +22,8 @@ set(PROJECT_SOURCES
         visualizationwindow.h 
         visualizationwindow.cpp 
         visualizationwindow.ui
-        carryworker.h
-        carryworker.cpp
-        sumworker.h
-        sumworker.cpp
+        worker.cpp
+        worker.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
