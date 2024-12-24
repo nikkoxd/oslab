@@ -20,7 +20,7 @@ VisualizationWindow::VisualizationWindow(QWidget *parent, QString firstNum, QStr
     connect(this, &VisualizationWindow::nextButtonClicked, worker, &Worker::processNextStep);
     connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
     connect(workerThread, &QThread::finished, workerThread, &QObject::deleteLater);
-
+      
     workerThread->start();
 }
 
@@ -33,6 +33,16 @@ void VisualizationWindow::set_text(const QString &carryText, const QString &sumT
 {
     ui->carry->setText(carryText);
     ui->result->setText(sumText);
+}
+
+void VisualizationWindow::set_sum(int sum)
+{
+  this->sum = sum;
+}
+
+void VisualizationWindow::set_carry(int carry)
+{
+  this->carry = carry;
 }
 
 void VisualizationWindow::on_nextButton_clicked()
