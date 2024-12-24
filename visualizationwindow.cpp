@@ -1,4 +1,6 @@
 #include "visualizationwindow.h"
+#include "carryworker.h"
+#include "sumworker.h"
 #include "ui_visualizationwindow.h"
 #include <QtConcurrent/QtConcurrent>
 
@@ -24,38 +26,6 @@ void VisualizationWindow::set_text()
 {
   ui->carry->setText(carryText);
   ui->result->setText(sumText);
-}
-
-void VisualizationWindow::set_sum()
-{
-  if (firstNumString[i] == '0' && secondNumString[i] == '0')
-  {
-    sum = 0;
-  }
-  else if (firstNumString[i] == '1' && secondNumString[i] == '1')
-  {
-    sum = 0;
-  }
-  else
-  {
-    sum = 1;
-  }
-}
-
-void VisualizationWindow::set_carry()
-{
-  if (firstNumString[i] == '0' && secondNumString[i] == '0')
-  {
-    carry = 0;
-  }
-  else if (firstNumString[i] == '1' && secondNumString[i] == '1')
-  {
-    carry = 1;
-  }
-  else
-  {
-    carry = 0;
-  }
 }
 
 void VisualizationWindow::check_for_prev_carry()
@@ -92,8 +62,15 @@ void VisualizationWindow::on_nextButton_clicked()
 
   prev_carry = carry;
 
-  QThread *sumWorker = QThread::create([this]() { set_sum(); });
-  QThread *carryWorker = QThread::create([this]() { set_carry(); });
+  SumWorker *sumWorker = new SumWorker(firstNumString, secondNumString, i);
+  connect(sumWorker, &SumWorker::sumUpdated, this, [this](int sum) {
+      this->sum = sum;
+  });
+
+  CarryWorker *carryWorker = new CarryWorker(firstNumString, secondNumString, i);
+  connect(carryWorker, &CarryWorker::carryUpdated, this, [this](int carry) {
+      this->carry = carry;
+  });
 
   sumWorker->start();
   carryWorker->start();
@@ -103,9 +80,6 @@ void VisualizationWindow::on_nextButton_clicked()
 
   check_for_prev_carry();
   set_text();
-
-  delete sumWorker;
-  delete carryWorker;
 
   i--;
 }
