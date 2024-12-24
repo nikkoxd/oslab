@@ -5,11 +5,11 @@ SumWorker::SumWorker(QString firstNum, QString secondNum, int index)
 
 void SumWorker::run() 
 {
-  if (firstNum[0] == '0' && secondNum[0] == '0')
+  if (firstNum[i] == '0' && secondNum[i] == '0')
   {
     sum = 0;
   }
-  else if (firstNum[0] == '1' && secondNum[0] == '1')
+  else if (firstNum[i] == '1' && secondNum[i] == '1')
   {
     sum = 0;
   }

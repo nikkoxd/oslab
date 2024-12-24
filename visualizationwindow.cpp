@@ -1,8 +1,8 @@
 #include "visualizationwindow.h"
-#include "carryworker.h"
-#include "sumworker.h"
 #include "ui_visualizationwindow.h"
 #include <QtConcurrent/QtConcurrent>
+#include "carryworker.h"
+#include "sumworker.h"
 
 VisualizationWindow::VisualizationWindow(QWidget *parent, QString firstNum,
                                          QString secondNum)
@@ -43,6 +43,16 @@ void VisualizationWindow::check_for_prev_carry()
   sumText[i + 1] = char('0' + sum);
 }
 
+void VisualizationWindow::set_sum(int sum)
+{
+  this->sum = sum;
+}
+
+void VisualizationWindow::set_carry(int carry)
+{
+  this->carry = carry;
+}
+
 void VisualizationWindow::on_nextButton_clicked()
 {
   if (i == -1 && carry)
@@ -63,16 +73,11 @@ void VisualizationWindow::on_nextButton_clicked()
   prev_carry = carry;
 
   SumWorker *sumWorker = new SumWorker(firstNumString, secondNumString, i);
-  connect(sumWorker, &SumWorker::sumUpdated, this, [this](int sum) {
-      this->sum = sum;
-  });
+  connect(sumWorker, &SumWorker::sumUpdated, this, &VisualizationWindow::set_sum);
+  sumWorker->start();
 
   CarryWorker *carryWorker = new CarryWorker(firstNumString, secondNumString, i);
-  connect(carryWorker, &CarryWorker::carryUpdated, this, [this](int carry) {
-      this->carry = carry;
-  });
-
-  sumWorker->start();
+  connect(carryWorker, &CarryWorker::carryUpdated, this, &VisualizationWindow::set_carry);
   carryWorker->start();
 
   sumWorker->wait();
