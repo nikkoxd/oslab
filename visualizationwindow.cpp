@@ -3,50 +3,37 @@
 #include "worker.h"
 #include <QThread>
 
-VisualizationWindow::VisualizationWindow(QWidget *parent, QString firstNum, QString secondNum)
+VisualizationWindow::VisualizationWindow(QWidget *parent, QString firstNum,
+                                         QString secondNum)
     : QMainWindow(parent), ui(new Ui::VisualizationWindow)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    ui->firstNum->setText(firstNum);
-    ui->secondNum->setText(secondNum);
+  ui->firstNum->setText(firstNum);
+  ui->secondNum->setText(secondNum);
 
-    worker = new Worker(firstNum, secondNum, firstNum.size() - 1);
-    workerThread = new QThread;
-    worker->moveToThread(workerThread);
+  worker = new Worker(firstNum, secondNum, firstNum.size() - 1);
+  workerThread = new QThread;
+  worker->moveToThread(workerThread);
 
-    connect(workerThread, &QThread::started, worker, &Worker::processNextStep);
-    connect(worker, &Worker::updateText, this, &VisualizationWindow::set_text);
-    connect(this, &VisualizationWindow::nextButtonClicked, worker, &Worker::processNextStep);
-    connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
-    connect(workerThread, &QThread::finished, workerThread, &QObject::deleteLater);
-      
-    workerThread->start();
+  connect(workerThread, &QThread::started, worker, &Worker::processNextStep);
+  connect(worker, &Worker::updateText, this, &VisualizationWindow::set_text);
+  connect(this, &VisualizationWindow::nextButtonClicked, worker,
+          &Worker::processNextStep);
+  connect(workerThread, &QThread::finished, worker, &QObject::deleteLater);
+  connect(workerThread, &QThread::finished, workerThread,
+          &QObject::deleteLater);
+
+  workerThread->start();
 }
 
-VisualizationWindow::~VisualizationWindow()
+VisualizationWindow::~VisualizationWindow() { delete ui; }
+
+void VisualizationWindow::set_text(const QString &carryText,
+                                   const QString &sumText)
 {
-    delete ui;
+  ui->carry->setText(carryText);
+  ui->result->setText(sumText);
 }
 
-void VisualizationWindow::set_text(const QString &carryText, const QString &sumText)
-{
-    ui->carry->setText(carryText);
-    ui->result->setText(sumText);
-}
-
-void VisualizationWindow::set_sum(int sum)
-{
-  this->sum = sum;
-}
-
-void VisualizationWindow::set_carry(int carry)
-{
-  this->carry = carry;
-}
-
-void VisualizationWindow::on_nextButton_clicked()
-{
-    emit nextButtonClicked();
-}
-
+void VisualizationWindow::on_nextButton_clicked() { emit nextButtonClicked(); }
