@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Visualization</string>
+   <string>Визуализация сложения</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="autoFillBackground">
@@ -137,7 +137,7 @@
      <item>
       <widget class="QPushButton" name="nextButton">
        <property name="text">
-        <string>Next</string>
+        <string>Следующий шаг</string>
        </property>
       </widget>
      </item>
