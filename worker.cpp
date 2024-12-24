@@ -1,9 +1,8 @@
 #include "worker.h"
 
-Worker::Worker(QString firstNumString, QString secondNumString,
-               int startingPoint, QObject *parent)
+Worker::Worker(QString firstNumString, QString secondNumString, QObject *parent)
     : firstNumString(firstNumString), secondNumString(secondNumString),
-      i(startingPoint), QObject(parent)
+      i(firstNumString.size() - 1), QObject(parent)
 {
 }
 

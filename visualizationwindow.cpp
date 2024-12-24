@@ -12,7 +12,7 @@ VisualizationWindow::VisualizationWindow(QWidget *parent, QString firstNum,
   ui->firstNum->setText(firstNum);
   ui->secondNum->setText(secondNum);
 
-  worker = new Worker(firstNum, secondNum, firstNum.size() - 1);
+  worker = new Worker(firstNum, secondNum);
   workerThread = new QThread;
   worker->moveToThread(workerThread);
 

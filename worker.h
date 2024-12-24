@@ -9,7 +9,7 @@ class Worker : public QObject
   Q_OBJECT
 
 public:
-  Worker(QString firstNumString, QString secondNumString, int startingPoint,
+  Worker(QString firstNumString, QString secondNumString,
          QObject *parent = nullptr);
 
 public slots:
