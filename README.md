@@ -1,7 +1,7 @@
 ### Сборка с использованием Cmake
 Создание файлов сборки:
 ```bash
-cmake -S . -B build
+cmake -G Ninja -S . -B build
 ```
 Сборка:
 ```bash
